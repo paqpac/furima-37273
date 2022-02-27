@@ -72,7 +72,7 @@
 
 | Column   | Type       | Options                        |
 | -------- | ---------- | ------------------------------ |
-| comments | string     | null: false                    |
+| content  | string     | null: false                    |
 | item     | references | null: false, foreign_key: true |
 | user     | references | null: false, foreign_key: true |
 
