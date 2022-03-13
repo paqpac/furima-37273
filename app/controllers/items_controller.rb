@@ -1,7 +1,7 @@
 class ItemsController < ApplicationController
-  before_action :authenticate_user!, except: [:index,:show]
-  before_action :params_id, except: [ :index, :new, :create ]
-  before_action :move_to_index, except: [:index, :new, :create, :show ]
+  before_action :authenticate_user!, except: [:index, :show]
+  before_action :params_id, except: [:index, :new, :create]
+  before_action :move_to_index, except: [:index, :new, :create, :show]
 
   def index
     @items = Item.all.order("created_at DESC")
@@ -34,13 +34,19 @@ class ItemsController < ApplicationController
     end
   end
 
+  def destroy
+    @item.destroy
+    redirect_to root_path
+  end
+
   private
+
   def item_params
-    params.require(:item).permit(:image, :name, :introduction, :category_id, :item_status_id, :shipping_cost_id, :prefecture_id, :delivery_time_id,:price ).merge(user_id: current_user.id)
+    params.require(:item).permit(:image, :name, :introduction, :category_id, :item_status_id, :shipping_cost_id, :prefecture_id, :delivery_time_id, :price).merge(user_id: current_user.id)
   end
 
   def params_id
-    @item = Item.find(params[:id])  
+    @item = Item.find(params[:id])
   end
 
   def move_to_index
