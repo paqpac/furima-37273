@@ -9,6 +9,12 @@ RSpec.describe PurchaseAddress, type: :model do
     it "郵便番号、都道府県、市区町村、番地、電話番号があれば購入出来ること" do
       expect(@purchase_address).to be_valid
     end
+
+    it "建物名はなくても購入出来ること" do
+      @purchase_address.building_name = ""
+      @purchase_address.valid?
+      expect(@purchase_address).to be_valid
+    end
   end
 
   context '内容に問題が有る場合' do
@@ -28,6 +34,12 @@ RSpec.describe PurchaseAddress, type: :model do
       @purchase_address.postal_code = "１２３ー４５６７"
       @purchase_address.valid?
       expect(@purchase_address.errors.full_messages).to include("Postal code is invalid")
+    end
+
+    it "都道府県を選択しなければ購入出来ないこと" do
+      @purchase_address.prefecture_id = 1
+      @purchase_address.valid?
+      expect(@purchase_address.errors.full_messages).to include("Prefecture can't be blank")
     end
 
     it "市区町村がなければ購入出来ないこと" do
@@ -61,6 +73,12 @@ RSpec.describe PurchaseAddress, type: :model do
       @purchase_address.phone_number = "０１２３４５６７８９"
       @purchase_address.valid?
       expect(@purchase_address.errors.full_messages).to include("Phone number is invalid")
+    end
+
+    it "userが紐付いていないと購入出来ないこと" do
+      @purchase_address.user_id = nil
+      @purchase_address.valid?
+      expect(@purchase_address.errors.full_messages).to include("User can't be blank")
     end
   end
 end

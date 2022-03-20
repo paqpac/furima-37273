@@ -5,6 +5,7 @@ class ItemsController < ApplicationController
 
   def index
     @items = Item.all.order("created_at DESC")
+    @purchase = Purchase.all
   end
   
   def new
@@ -24,6 +25,9 @@ class ItemsController < ApplicationController
   end
   
   def edit
+    if !@item.purchase.nil?
+    redirect_to root_path
+    end
   end
 
   def update
