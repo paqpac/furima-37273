@@ -6,7 +6,7 @@ RSpec.describe PurchaseAddress, type: :model do
   end
 
   context '内容に問題が無い場合' do
-    it "郵便番号、都道府県、市区町村、番地、電話番号があれば購入出来ること" do
+    it "カード情報、郵便番号、都道府県、市区町村、番地、電話番号があれば購入出来ること" do
       expect(@purchase_address).to be_valid
     end
 
@@ -18,6 +18,12 @@ RSpec.describe PurchaseAddress, type: :model do
   end
 
   context '内容に問題が有る場合' do
+    it "カード情報が無ければ購入出来ないこと" do
+      @purchase_address.token = ""
+      @purchase_address.valid?
+      expect(@purchase_address.errors.full_messages).to include("Token can't be blank")
+    end
+
     it "郵便番号が無ければ購入出来ないこと" do
       @purchase_address.postal_code = ""
       @purchase_address.valid?
