@@ -1,5 +1,6 @@
 FactoryBot.define do
   factory :item do
+    id               {Faker::Number.number(digits: 1)}
     name             {Faker::Lorem.words}
     introduction     {Faker::Lorem.sentence}
     category_id      { 2 }
@@ -8,7 +9,7 @@ FactoryBot.define do
     prefecture_id    { 2 }
     delivery_time_id { 2 }
     price            {Faker::Number.between(from: 300, to: 9999999)}
-    
+
     association :user
     
     after(:build) do |item|

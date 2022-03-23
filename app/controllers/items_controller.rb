@@ -5,7 +5,6 @@ class ItemsController < ApplicationController
 
   def index
     @items = Item.all.order("created_at DESC")
-    @purchase = Purchase.all
   end
   
   def new
@@ -27,7 +26,6 @@ class ItemsController < ApplicationController
   def edit
     return unless !@item.purchase.nil?
     redirect_to root_path
-    end
   end
 
   def update
@@ -56,5 +54,4 @@ class ItemsController < ApplicationController
   def move_to_index
     return if user_signed_in? && current_user.id == @item.user_id
       redirect_to root_path
-  end
 end

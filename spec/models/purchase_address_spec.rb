@@ -2,7 +2,10 @@ require 'rails_helper'
 
 RSpec.describe PurchaseAddress, type: :model do
   before do
-    @purchase_address = FactoryBot.build(:purchase_address)
+    @user = FactoryBot.build(:user)
+    @item = FactoryBot.build(:item)
+    @purchase_address = FactoryBot.build(:purchase_address, user_id: [@user.id], item_id: [@item.id])
+    sleep 0.1
   end
 
   context '内容に問題が無い場合' do
@@ -72,8 +75,11 @@ RSpec.describe PurchaseAddress, type: :model do
       expect(@purchase_address.errors.full_messages).to include("Phone number is invalid")
     end
 
-    # it "電話番号は11桁以内でなければ購入出来ないこと" do
-    # 11桁以上は入力不可なのでテストコード省略
+    it "電話番号は11桁以内でなければ購入出来ないこと" do
+      @purchase_address.phone_number = "012345678901234"
+      @purchase_address.valid?
+      expect(@purchase_address.errors.full_messages).to include("Phone number is too long (maximum is 11 characters)")
+    end
 
     it "電話番号は半角数値でなければ購入出来ないこと" do
       @purchase_address.phone_number = "０１２３４５６７８９"
@@ -85,6 +91,12 @@ RSpec.describe PurchaseAddress, type: :model do
       @purchase_address.user_id = nil
       @purchase_address.valid?
       expect(@purchase_address.errors.full_messages).to include("User can't be blank")
+    end
+
+    it "itemが紐付いていないと購入出来ないこと" do
+      @purchase_address.item_id = nil
+      @purchase_address.valid?
+      expect(@purchase_address.errors.full_messages).to include("Item can't be blank")
     end
   end
 end

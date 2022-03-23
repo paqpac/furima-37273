@@ -6,8 +6,6 @@ FactoryBot.define do
     block_number {"豊平区平岸一条一丁目"} 
     building_name {"ライオンズマンション" }
     phone_number {"01234567890"}
-    item_id {1}
-    user_id {1}
     token {"tok_abcdefghijk00000000000000000"}
   end
 end
